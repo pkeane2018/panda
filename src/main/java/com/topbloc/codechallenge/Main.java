@@ -24,5 +24,6 @@ public class Main {
         //TODO: Add your routes here. a couple of examples are below
         get("/items", (req, res) -> DatabaseManager.getItems());
         get("/version", (req, res) -> "TopBloc Code Challenge v1.0");
+        get("/inventory", (req, res) -> DatabaseManager.getAllInventory());
     }
 }

@@ -149,4 +149,16 @@ public class DatabaseManager {
             return null;
         }
     }
+
+    // returns the id, name, total number in stock, and total capacity for all items in inventory
+    public static JSONArray getAllInventory() {
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity FROM items JOIN inventory ON items.id = inventory.item";
+        try {
+            ResultSet set = conn.createStatement().executeQuery(sql);
+            return convertResultSetToJson(set);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }
