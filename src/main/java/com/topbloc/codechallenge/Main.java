@@ -1,6 +1,7 @@
 package com.topbloc.codechallenge;
 
 import com.topbloc.codechallenge.db.DatabaseManager;
+import spark.utils.StringUtils;
 
 import static spark.Spark.*;
 
@@ -24,7 +25,13 @@ public class Main {
         //TODO: Add your routes here. a couple of examples are below
         get("/items", (req, res) -> DatabaseManager.getItems());
         get("/version", (req, res) -> "TopBloc Code Challenge v1.0");
-        get("/inventory", (req, res) -> DatabaseManager.getAllInventory());
+        get("/inventory", (req, res) -> {
+            // If an id is provided as a query parameter, return data on the item with that id, otherwise return data on all items in inventory
+            if (!StringUtils.isEmpty(req.queryParams("id"))){
+                return DatabaseManager.getItemById(req.queryParams("id"));
+            }
+            return DatabaseManager.getAllInventory();
+        });
         get("/outOfStock", (req, res) -> DatabaseManager.getAllOutOfStockItems());
         get("/lowStock", (req, res) -> DatabaseManager.getLowStockItems());
         get("/overStocked", (req, res) -> DatabaseManager.getOverStockedItems());

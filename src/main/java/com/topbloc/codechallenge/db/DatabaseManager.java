@@ -190,4 +190,12 @@ public class DatabaseManager {
         return executeQuery(sql);
     }
 
+    public static JSONArray getItemById(String id){
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
+                + " FROM items JOIN inventory"
+                + " ON items.id = inventory.item"
+                + " WHERE items.id = " + id;
+        return executeQuery(sql);
+    }
+
 }
