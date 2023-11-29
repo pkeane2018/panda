@@ -170,8 +170,8 @@ public class DatabaseManager {
 
     public static JSONArray getAllOutOfStockItems(){
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
-                    + " FROM items JOIN inventory"
-                    + " ON items.id = inventory.item WHERE inventory.stock <= 0";
+                    + " FROM items JOIN inventory ON items.id = inventory.item"
+                    + " WHERE inventory.stock <= 0";
         return executeQuery(sql);
     }
 
@@ -180,6 +180,13 @@ public class DatabaseManager {
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
                     + " FROM items JOIN inventory ON items.id = inventory.item"
                     + " WHERE CAST(inventory.stock as float) / CAST(inventory.capacity as float) < 0.35";
+        return executeQuery(sql);
+    }
+
+    public static JSONArray getOverStockedItems(){
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
+                + " FROM items JOIN inventory ON items.id = inventory.item"
+                + " WHERE inventory.stock > inventory.capacity";
         return executeQuery(sql);
     }
 

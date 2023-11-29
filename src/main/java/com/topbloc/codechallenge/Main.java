@@ -27,5 +27,6 @@ public class Main {
         get("/inventory", (req, res) -> DatabaseManager.getAllInventory());
         get("/outOfStock", (req, res) -> DatabaseManager.getAllOutOfStockItems());
         get("/lowStock", (req, res) -> DatabaseManager.getLowStockItems());
+        get("/overStocked", (req, res) -> DatabaseManager.getOverStockedItems());
     }
 }
