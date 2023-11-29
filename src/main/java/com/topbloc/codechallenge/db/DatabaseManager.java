@@ -217,15 +217,15 @@ public class DatabaseManager {
         JSONParser parser = new JSONParser();
         JSONObject obj;
         String name = "";
-        int id = 0;
+        String id = "";
         try {
             obj = (JSONObject) parser.parse(requestBody);
             name = (String) obj.get("name");
-            id = Integer.parseInt(obj.get("id").toString());
+            id = (String) obj.get("id");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        String query = "INSERT INTO items (name, id) VALUES ( '"+ name + "', " + id + " )";
+        String query = "INSERT INTO items (name, id) VALUES ('"+ name + "', " + id + ")";
         return updateDB(query);
     }
 

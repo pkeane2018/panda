@@ -22,8 +22,12 @@ public class Main {
         });
 
         //TODO: Add your routes here. a couple of examples are below
-        get("/items", (req, res) -> DatabaseManager.getItems());
         get("/version", (req, res) -> "TopBloc Code Challenge v1.0");
+
+        // Item routes
+        get("/items", (req, res) -> DatabaseManager.getItems());
+        post("items", (req, res) -> DatabaseManager.addItem(req.body()));
+        get("/items/:distributorId", (req, res) -> DatabaseManager.getItemsByDistID(req.params("distributorId")));
 
         // Inventory routes
         get("/inventory", (req, res) -> DatabaseManager.getAllInventory());
@@ -31,11 +35,9 @@ public class Main {
         get("/lowStock", (req, res) -> DatabaseManager.getLowStockItems());
         get("/overStocked", (req, res) -> DatabaseManager.getOverStockedItems());
         get("/inventory/:id", (req, res) -> DatabaseManager.getItemById(req.params("id")));
-        post("items", (req, res) -> DatabaseManager.addItem(req.body()));
 
         // Distributor routes
         get("/distributors", (req, res) -> DatabaseManager.getAllDistributors());
         get("/distributors/:itemId", (req, res) -> DatabaseManager.getDistributorByItemId(req.params("itemId")));
-        get("/items/:distributorId", (req, res) -> DatabaseManager.getItemsByDistID(req.params("distributorId")));
     }
 }
