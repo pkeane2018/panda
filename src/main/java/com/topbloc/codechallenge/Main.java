@@ -25,6 +25,8 @@ public class Main {
         //TODO: Add your routes here. a couple of examples are below
         get("/items", (req, res) -> DatabaseManager.getItems());
         get("/version", (req, res) -> "TopBloc Code Challenge v1.0");
+
+        // Inventory routes
         get("/inventory", (req, res) -> {
             // If an id is provided as a query parameter, return data on the item with that id, otherwise return data on all items in inventory
             if (!StringUtils.isEmpty(req.queryParams("id"))){
@@ -35,5 +37,8 @@ public class Main {
         get("/outOfStock", (req, res) -> DatabaseManager.getAllOutOfStockItems());
         get("/lowStock", (req, res) -> DatabaseManager.getLowStockItems());
         get("/overStocked", (req, res) -> DatabaseManager.getOverStockedItems());
+
+        // Distributor routes
+        get("/distributors", (req, res) -> DatabaseManager.getAllDistributors());
     }
 }

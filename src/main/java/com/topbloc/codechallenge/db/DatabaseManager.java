@@ -160,6 +160,7 @@ public class DatabaseManager {
         }
     }
 
+    // Inventory Methods
     public static JSONArray getAllInventory() {
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
                     + " FROM items JOIN inventory"
@@ -195,6 +196,12 @@ public class DatabaseManager {
                 + " FROM items JOIN inventory"
                 + " ON items.id = inventory.item"
                 + " WHERE items.id = " + id;
+        return executeQuery(sql);
+    }
+
+    // Distributor Methods
+    public static JSONArray getAllDistributors(){
+        String sql = "SELECT * FROM distributors";
         return executeQuery(sql);
     }
 
