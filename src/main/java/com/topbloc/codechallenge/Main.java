@@ -1,7 +1,6 @@
 package com.topbloc.codechallenge;
 
 import com.topbloc.codechallenge.db.DatabaseManager;
-import spark.utils.StringUtils;
 
 import static spark.Spark.*;
 
@@ -35,6 +34,7 @@ public class Main {
 
         // Distributor routes
         get("/distributors", (req, res) -> DatabaseManager.getAllDistributors());
+        get("/items/:distributorId", (req, res) -> DatabaseManager.getItemsByDistID(req.params("distributorId")));
 
     }
 }

@@ -205,4 +205,12 @@ public class DatabaseManager {
         return executeQuery(sql);
     }
 
+    // using provided distributor id, returns all items distributed by the distributor with that id
+    public static JSONArray getItemsByDistID(String id){
+        String sql = "SELECT items.name, items.id, distributor_prices.cost"
+                + " FROM items JOIN distributor_prices ON items.id = distributor_prices.item"
+                + " WHERE distributor_prices.distributor = " + id;
+        return executeQuery(sql);
+    }
+
 }
