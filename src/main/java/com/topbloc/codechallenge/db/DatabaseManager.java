@@ -2,6 +2,7 @@ package com.topbloc.codechallenge.db;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.sql.*;
@@ -160,6 +161,19 @@ public class DatabaseManager {
         }
     }
 
+    public static String updateDB(String sql){
+        int result = 0;
+        try {
+            result = conn.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            return e.getMessage();
+        }
+        if (result > 0){
+            return "Status: 200 Success";
+        }
+        return "Status: 500 Failure";
+    }
+
     // Inventory Methods
     public static JSONArray getAllInventory() {
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
@@ -197,6 +211,22 @@ public class DatabaseManager {
                 + " ON items.id = inventory.item"
                 + " WHERE items.id = " + id;
         return executeQuery(sql);
+    }
+
+    public static String addItem(String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        String name = "";
+        int id = 0;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            name = (String) obj.get("name");
+            id = Integer.parseInt(obj.get("id").toString());
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String query = "INSERT INTO items (name, id) VALUES ( '"+ name + "', " + id + " )";
+        return updateDB(query);
     }
 
     // Distributor Methods
