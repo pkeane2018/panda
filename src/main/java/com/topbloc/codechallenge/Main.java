@@ -26,5 +26,6 @@ public class Main {
         get("/version", (req, res) -> "TopBloc Code Challenge v1.0");
         get("/inventory", (req, res) -> DatabaseManager.getAllInventory());
         get("/outOfStock", (req, res) -> DatabaseManager.getAllOutOfStockItems());
+        get("/lowStock", (req, res) -> DatabaseManager.getLowStockItems());
     }
 }

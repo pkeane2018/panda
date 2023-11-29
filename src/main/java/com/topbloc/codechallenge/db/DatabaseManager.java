@@ -161,12 +161,25 @@ public class DatabaseManager {
     }
 
     public static JSONArray getAllInventory() {
-        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity FROM items JOIN inventory ON items.id = inventory.item";
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
+                    + " FROM items JOIN inventory"
+                    + " ON items.id = inventory.item";
+        System.out.println("The query is " + sql);
         return executeQuery(sql);
     }
 
     public static JSONArray getAllOutOfStockItems(){
-        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity FROM items JOIN inventory ON items.id = inventory.item WHERE inventory.stock <= 0";
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
+                    + " FROM items JOIN inventory"
+                    + " ON items.id = inventory.item WHERE inventory.stock <= 0";
+        return executeQuery(sql);
+    }
+
+    // returns all items for which the quantity currently in stock is less than 35 percent of total capacity
+    public static JSONArray getLowStockItems(){
+        String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
+                    + " FROM items JOIN inventory ON items.id = inventory.item"
+                    + " WHERE CAST(inventory.stock as float) / CAST(inventory.capacity as float) < 0.35";
         return executeQuery(sql);
     }
 
