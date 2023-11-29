@@ -179,7 +179,6 @@ public class DatabaseManager {
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
                     + " FROM items JOIN inventory"
                     + " ON items.id = inventory.item";
-        System.out.println("The query is " + sql);
         return executeQuery(sql);
     }
 
@@ -217,15 +216,33 @@ public class DatabaseManager {
         JSONParser parser = new JSONParser();
         JSONObject obj;
         String name = "";
-        String id = "";
+        Long id = 0L;
         try {
             obj = (JSONObject) parser.parse(requestBody);
             name = (String) obj.get("name");
-            id = (String) obj.get("id");
+            id = (Long) obj.get("id");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
         String query = "INSERT INTO items (name, id) VALUES ('"+ name + "', " + id + ")";
+        return updateDB(query);
+    }
+
+    public static String addToInventory(String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        Long item = 0L;
+        Long stock = 0L;
+        Long capacity = 0L;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            item = (Long) obj.get("item");
+            stock = (Long) obj.get("stock");
+            capacity = (Long) obj.get("capacity");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String query = "INSERT INTO inventory (item, stock, capacity) VALUES (" + item + ", " + stock + ", " + capacity + ")";
         return updateDB(query);
     }
 
