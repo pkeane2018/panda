@@ -311,6 +311,11 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    public static String deleteDistributor(String id){
+        String query = "DELETE FROM distributors WHERE distributors.id = " + id;
+        return updateDB(query);
+    }
+
     public static String editItemCost(String itemId, String distributorId, String requestBody){
         JSONParser parser = new JSONParser();
         JSONObject obj;
