@@ -246,6 +246,11 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    public static String deleteInventoryItem(String id) {
+        String query = "DELETE FROM inventory WHERE inventory.item = " + id;
+        return updateDB(query);
+    }
+
     // Distributor Methods
     public static JSONArray getAllDistributors(){
         String sql = "SELECT * FROM distributors";
@@ -309,7 +314,6 @@ public class DatabaseManager {
     public static String editItemCost(String itemId, String distributorId, String requestBody){
         JSONParser parser = new JSONParser();
         JSONObject obj;
-//        Double cost = 0D;
         String costStr = "";
         try {
             obj = (JSONObject) parser.parse(requestBody);
