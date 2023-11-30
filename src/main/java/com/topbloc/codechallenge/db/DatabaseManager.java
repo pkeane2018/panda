@@ -285,4 +285,24 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    // adds new item to distributor prices table
+    public static String addToDistributorCatalogue(String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        Long item = 0L;
+        Long distributor = 0L;
+        Double cost = 0D;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            item = (Long) obj.get("item");
+            distributor = (Long) obj.get("distributor");
+            cost = (Double) obj.get("cost");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        String query = "INSERT INTO distributor_prices (distributor, item, cost) VALUES (" + distributor + ", " + item + ", " + cost + ")";
+        return updateDB(query);
+    }
+
 }
