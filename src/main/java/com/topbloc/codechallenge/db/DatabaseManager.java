@@ -251,6 +251,23 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    public static String updateInventoryItem(String id, String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        Long stock = 0L;
+        Long capacity = 0L;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            stock = (Long) obj.get("stock");
+            capacity = (Long) obj.get("capacity");
+        }
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
+        String query = "UPDATE inventory SET stock = " + stock + ", capacity = " + capacity + " WHERE id = " + id;
+        return updateDB(query);
+    }
+
     // Distributor Methods
     public static JSONArray getAllDistributors(){
         String sql = "SELECT * FROM distributors";

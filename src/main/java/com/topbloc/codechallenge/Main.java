@@ -36,6 +36,7 @@ public class Main {
         get("/overStocked", (req, res) -> DatabaseManager.getOverStockedItems());
         get("/inventory/:id", (req, res) -> DatabaseManager.getItemById(req.params("id")));
         post("/inventory", (req, res) -> DatabaseManager.addToInventory(req.body()));
+        patch("/inventory/:id", (req, res) -> DatabaseManager.updateInventoryItem(req.params("id"), req.body()));
         delete("inventory/:id", (req, res) -> DatabaseManager.deleteInventoryItem(req.params("id")));
 
         // Distributor routes
