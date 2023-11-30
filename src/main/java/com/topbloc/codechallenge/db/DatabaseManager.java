@@ -291,17 +291,35 @@ public class DatabaseManager {
         JSONObject obj;
         Long item = 0L;
         Long distributor = 0L;
-        Double cost = 0D;
+        String costStr = "";
         try {
             obj = (JSONObject) parser.parse(requestBody);
             item = (Long) obj.get("item");
             distributor = (Long) obj.get("distributor");
-            cost = (Double) obj.get("cost");
+            Double cost = (Double) obj.get("cost");
+            costStr = String.format("%.2f", cost);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-        String query = "INSERT INTO distributor_prices (distributor, item, cost) VALUES (" + distributor + ", " + item + ", " + cost + ")";
+        String query = "INSERT INTO distributor_prices (distributor, item, cost) VALUES (" + distributor + ", " + item + ", " + costStr + ")";
+        return updateDB(query);
+    }
+
+    public static String editItemCost(String itemId, String distributorId, String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+//        Double cost = 0D;
+        String costStr = "";
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            Double cost = (Double) obj.get("cost");
+            costStr = String.format("%.2f", cost);
+        }
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
+        String query = "UPDATE distributor_prices SET cost = " + costStr + " WHERE item = " + itemId + " AND distributor = " + distributorId;
         return updateDB(query);
     }
 

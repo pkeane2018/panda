@@ -42,5 +42,6 @@ public class Main {
         get("/distributors/:itemId", (req, res) -> DatabaseManager.getDistributorByItemId(req.params("itemId")));
         post("/distributors", (req, res) -> DatabaseManager.addDistributor(req.body()));
         post("/distributors/items/add", (req, res) -> DatabaseManager.addToDistributorCatalogue(req.body()));
+        patch("/distributors/:itemId/:distributorId", (req, res) -> DatabaseManager.editItemCost(req.params("itemId"), req.params("distributorId"), req.body()));
     }
 }
