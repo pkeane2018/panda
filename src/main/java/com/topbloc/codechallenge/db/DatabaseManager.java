@@ -268,4 +268,21 @@ public class DatabaseManager {
         return executeQuery(sql);
     }
 
+    public static String addDistributor(String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        String name = "";
+        Long id = 0L;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            name = (String) obj.get("name");
+            id = (Long) obj.get("id");
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String query = "INSERT INTO distributors (id, name) VALUES (" + id + ", '" + name + "')";
+        return updateDB(query);
+    }
+
 }

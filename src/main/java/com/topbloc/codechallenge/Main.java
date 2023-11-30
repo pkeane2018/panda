@@ -40,5 +40,6 @@ public class Main {
         // Distributor routes
         get("/distributors", (req, res) -> DatabaseManager.getAllDistributors());
         get("/distributors/:itemId", (req, res) -> DatabaseManager.getDistributorByItemId(req.params("itemId")));
+        post("/distributors", (req, res) -> DatabaseManager.addDistributor(req.body()));
     }
 }
