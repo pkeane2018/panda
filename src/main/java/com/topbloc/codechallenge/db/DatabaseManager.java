@@ -139,18 +139,7 @@ public class DatabaseManager {
         return obj;
     }
 
-    // Controller functions - add your routes here. getItems is provided as an example
-    public static JSONArray getItems() {
-        String sql = "SELECT * FROM items";
-        try {
-            ResultSet set = conn.createStatement().executeQuery(sql);
-            return convertResultSetToJson(set);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
+    // Helper Functions
     public static JSONArray executeQuery(String sql){
         try {
             ResultSet set = conn.createStatement().executeQuery(sql);
@@ -174,7 +163,37 @@ public class DatabaseManager {
         return "Status: 500 Failure";
     }
 
-    // Inventory Methods
+    // Controller functions - add your routes here. getItems is provided as an example
+
+    // Item Functions
+    public static JSONArray getItems() {
+        String sql = "SELECT * FROM items";
+        try {
+            ResultSet set = conn.createStatement().executeQuery(sql);
+            return convertResultSetToJson(set);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static String addItem(String requestBody){
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        String name = "";
+        Long id = 0L;
+        try {
+            obj = (JSONObject) parser.parse(requestBody);
+            name = (String) obj.get("name");
+            id = (Long) obj.get("id");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        String query = "INSERT INTO items (name, id) VALUES ('"+ name + "', " + id + ")";
+        return updateDB(query);
+    }
+
+    // Inventory Functions
     public static JSONArray getAllInventory() {
         String sql = "SELECT items.id, items.name, inventory.stock, inventory.capacity"
                     + " FROM items JOIN inventory"
@@ -210,22 +229,6 @@ public class DatabaseManager {
                 + " ON items.id = inventory.item"
                 + " WHERE items.id = " + id;
         return executeQuery(sql);
-    }
-
-    public static String addItem(String requestBody){
-        JSONParser parser = new JSONParser();
-        JSONObject obj;
-        String name = "";
-        Long id = 0L;
-        try {
-            obj = (JSONObject) parser.parse(requestBody);
-            name = (String) obj.get("name");
-            id = (Long) obj.get("id");
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        String query = "INSERT INTO items (name, id) VALUES ('"+ name + "', " + id + ")";
-        return updateDB(query);
     }
 
     public static String addToInventory(String requestBody){
@@ -268,23 +271,9 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
-    // returns lowest cost from all distributors to restock item with provided id
-    public static JSONArray getLowestCost(String itemId){
-        String query = "SELECT MIN(cost) as lowest_cost FROM distributor_prices WHERE item = " + itemId;
-        return executeQuery(query);
-    }
-
-    // Distributor Methods
+    // Distributor Functions
     public static JSONArray getAllDistributors(){
         String sql = "SELECT * FROM distributors";
-        return executeQuery(sql);
-    }
-
-    // given the provided distributor id, returns all items distributed by the distributor with that id
-    public static JSONArray getItemsByDistID(String id){
-        String sql = "SELECT items.name, items.id, distributor_prices.cost"
-                + " FROM items JOIN distributor_prices ON items.id = distributor_prices.item"
-                + " WHERE distributor_prices.distributor = " + id;
         return executeQuery(sql);
     }
 
@@ -313,8 +302,29 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    public static String deleteDistributor(String id){
+        String query = "DELETE FROM distributors WHERE distributors.id = " + id;
+        return updateDB(query);
+    }
+
+    // Distributor Catalog Functions
+
+    // returns lowest cost from all distributors to restock item with provided id
+    public static JSONArray getLowestCost(String itemId){
+        String query = "SELECT MIN(cost) as lowest_cost FROM distributor_prices WHERE item = " + itemId;
+        return executeQuery(query);
+    }
+
+    // given the provided distributor id, returns all items distributed by the distributor with that id
+    public static JSONArray getItemsByDistID(String id){
+        String sql = "SELECT items.name, items.id, distributor_prices.cost"
+                + " FROM items JOIN distributor_prices ON items.id = distributor_prices.item"
+                + " WHERE distributor_prices.distributor = " + id;
+        return executeQuery(sql);
+    }
+
     // adds new item to distributor prices table
-    public static String addToDistributorCatalogue(String requestBody){
+    public static String addToDistributorCatalog(String requestBody){
         JSONParser parser = new JSONParser();
         JSONObject obj;
         Long item = 0L;
@@ -334,11 +344,6 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
-    public static String deleteDistributor(String id){
-        String query = "DELETE FROM distributors WHERE distributors.id = " + id;
-        return updateDB(query);
-    }
-
     public static String editItemCost(String itemId, String distributorId, String requestBody){
         JSONParser parser = new JSONParser();
         JSONObject obj;
@@ -354,5 +359,4 @@ public class DatabaseManager {
         String query = "UPDATE distributor_prices SET cost = " + costStr + " WHERE item = " + itemId + " AND distributor = " + distributorId;
         return updateDB(query);
     }
-
 }
