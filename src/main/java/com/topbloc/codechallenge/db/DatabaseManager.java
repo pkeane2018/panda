@@ -268,6 +268,12 @@ public class DatabaseManager {
         return updateDB(query);
     }
 
+    // returns lowest cost from all distributors to restock item with provided id
+    public static JSONArray getLowestCost(String itemId){
+        String query = "SELECT MIN(cost) as lowest_cost FROM distributor_prices WHERE item = " + itemId;
+        return executeQuery(query);
+    }
+
     // Distributor Methods
     public static JSONArray getAllDistributors(){
         String sql = "SELECT * FROM distributors";

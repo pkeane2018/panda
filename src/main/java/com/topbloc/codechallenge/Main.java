@@ -38,6 +38,7 @@ public class Main {
         post("/inventory", (req, res) -> DatabaseManager.addToInventory(req.body()));
         patch("/inventory/:id", (req, res) -> DatabaseManager.updateInventoryItem(req.params("id"), req.body()));
         delete("inventory/:id", (req, res) -> DatabaseManager.deleteInventoryItem(req.params("id")));
+        get("inventory/lowestCost/:id", (req, res) -> DatabaseManager.getLowestCost(req.params("id")));
 
         // Distributor routes
         get("/distributors", (req, res) -> DatabaseManager.getAllDistributors());
